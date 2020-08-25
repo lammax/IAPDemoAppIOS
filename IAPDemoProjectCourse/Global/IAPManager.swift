@@ -40,6 +40,9 @@ class IAPManager: NSObject {
     }
     
     public func purchase(productWith identifier: String) {
+        //iPhone iTunes AppStore logout first!
+        //iq777@mail.ru \ aaa123@b123.com
+        //qqQQ11!!
         guard let product = products.filter({ $0.productIdentifier == identifier }).first else { return }
         let payment = SKPayment(product: product)
         
