@@ -12,6 +12,8 @@ import StoreKit
 class PurchaseController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    
+    let iap = IAPManager.sharedInstance
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +24,18 @@ class PurchaseController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(IAPManager.productNotificationIdentifier), object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     
     @objc private func restorePurchases() {
         print("restoring purchases")
     }
     @objc private func reload() {
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 
     private func setupNavigationBar() {
@@ -51,13 +59,13 @@ extension PurchaseController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return IAPManager.sharedInstance.products.count
+        return iap.products.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.purchaseCell, for: indexPath)
         
-        let product = IAPManager.sharedInstance.products[indexPath.row]
+        let product = iap.products[indexPath.row]
         cell.textLabel?.text = product.localizedTitle + " - " + self.priceString(for: product)
         return cell
     }
@@ -67,6 +75,8 @@ extension PurchaseController: UITableViewDataSource {
 extension PurchaseController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+        let identifier = iap.products[indexPath.row].productIdentifier
+        iap.purchase(productWith: identifier)
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
