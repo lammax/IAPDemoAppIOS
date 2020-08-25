@@ -11,10 +11,11 @@ import StoreKit
 
 class IAPManager: NSObject {
     
+    static let productNotificationIdentifier = "IAPManagerProductIdentifier"
     static let sharedInstance = IAPManager()
     private override init() {}
     
-    private var products: [SKProduct] = []
+    var products: [SKProduct] = []
     
     public func setupPurchases(callback: @escaping (Bool) -> Void) {
         if SKPaymentQueue.canMakePayments() {
@@ -47,9 +48,8 @@ extension IAPManager: SKPaymentTransactionObserver {
 extension IAPManager: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         self.products = response.products
-        print(self.products.count)
-        self.products.forEach { print($0.localizedTitle) }
-        print(response.products.count)
-        print(response.invalidProductIdentifiers.count)
+        if self.products.count > 0 {
+            NotificationCenter.default.post(name: NSNotification.Name(IAPManager.productNotificationIdentifier) , object: nil)
+        }
     }
 }
