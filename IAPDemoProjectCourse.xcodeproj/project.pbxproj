@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		04F092DD24F43E98009BC035 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04F092DC24F43E98009BC035 /* StoreKit.framework */; };
+		04F092DF24F559B5009BC035 /* IAPProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F092DE24F559B5009BC035 /* IAPProducts.swift */; };
+		04F092E224F55A5A009BC035 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F092E124F55A5A009BC035 /* IAPManager.swift */; };
 		3534CE811FA1B45400E591BC /* CellIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3534CE801FA1B45400E591BC /* CellIdentifiers.swift */; };
 		35D094E41FA1A73D005C5BC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D094E31FA1A73D005C5BC5 /* AppDelegate.swift */; };
 		35D094E91FA1A73D005C5BC5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D094E71FA1A73D005C5BC5 /* Main.storyboard */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		04F092DC24F43E98009BC035 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		04F092DE24F559B5009BC035 /* IAPProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPProducts.swift; sourceTree = "<group>"; };
+		04F092E124F55A5A009BC035 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		3534CE801FA1B45400E591BC /* CellIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellIdentifiers.swift; sourceTree = "<group>"; };
 		35D094E01FA1A73D005C5BC5 /* IAPDemoProjectCourse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IAPDemoProjectCourse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D094E31FA1A73D005C5BC5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +46,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04F092E024F55A4C009BC035 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				04F092E124F55A5A009BC035 /* IAPManager.swift */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		35D094D71FA1A73D005C5BC5 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +85,7 @@
 		35D094F51FA1AA70005C5BC5 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				04F092E024F55A4C009BC035 /* Managers */,
 				35D094F71FA1AA7B005C5BC5 /* Model */,
 				35D094F81FA1AA83005C5BC5 /* View */,
 				35D094F61FA1AA76005C5BC5 /* Controller */,
@@ -92,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				3534CE801FA1B45400E591BC /* CellIdentifiers.swift */,
+				04F092DE24F559B5009BC035 /* IAPProducts.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -263,10 +277,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04F092E224F55A5A009BC035 /* IAPManager.swift in Sources */,
 				35D095031FA1ABA8005C5BC5 /* MainController.swift in Sources */,
 				35D095051FA1ABCE005C5BC5 /* PurchaseController.swift in Sources */,
 				3534CE811FA1B45400E591BC /* CellIdentifiers.swift in Sources */,
 				35D094E41FA1A73D005C5BC5 /* AppDelegate.swift in Sources */,
+				04F092DF24F559B5009BC035 /* IAPProducts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,12 +422,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z8JVJD6M2F;
 				INFOPLIST_FILE = "$(SRCROOT)/IAPDemoProjectCourse/Supporting files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lammax.ios.study.purchases.iapdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -422,12 +438,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z8JVJD6M2F;
 				INFOPLIST_FILE = "$(SRCROOT)/IAPDemoProjectCourse/Supporting files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lammax.ios.study.purchases.iapdemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

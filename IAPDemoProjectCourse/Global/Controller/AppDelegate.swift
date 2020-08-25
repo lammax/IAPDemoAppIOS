@@ -16,6 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        IAPManager.sharedInstance.setupPurchases { success in
+            if success {
+                print("Can make payments")
+                IAPManager.sharedInstance.getProducts()
+            }
+        }
+        
         return true
     }
 }
