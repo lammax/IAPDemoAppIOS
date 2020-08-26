@@ -5,6 +5,8 @@
 //  Created by Mac on 25.08.2020.
 //  Copyright © 2020 Ivan Akulov. All rights reserved.
 //
+//https://www.apple.com/certificateauthority/ - Apple Inc. Root Certificate download
+//https://github.com/levigroker/GRKOpenSSLFramework - include header search path + use Pod
 
 import Foundation
 import StoreKit
