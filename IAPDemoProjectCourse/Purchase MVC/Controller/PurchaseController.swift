@@ -14,14 +14,15 @@ class PurchaseController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     let iap = IAPManager.sharedInstance
+    let notification = NotificationCenter.default
   
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView()
         setupNavigationBar()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(IAPManager.productNotificationIdentifier), object: nil)
+        setupNotifications()
+
     }
     
     deinit {
@@ -30,7 +31,7 @@ class PurchaseController: UIViewController {
     
     
     @objc private func restorePurchases() {
-        print("restoring purchases")
+        iap.restoreCompletedTransactions()
     }
     @objc private func reload() {
         DispatchQueue.main.async {
@@ -42,6 +43,14 @@ class PurchaseController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Restore", style: .plain, target: self, action: #selector(restorePurchases))
     }
     
+    private func setupNotifications() {
+        notification.addObserver(self, selector: #selector(reload), name: NSNotification.Name(IAPManager.productNotificationIdentifier), object: nil)
+        notification.addObserver(self, selector: #selector(processConsumablePurchased(_:)), name: NSNotification.Name(IAPProduct.consumable.rawValue), object: nil)
+        notification.addObserver(self, selector: #selector(processNonConsumablePurchased(_:)), name: NSNotification.Name(IAPProduct.nonConsumable.rawValue), object: nil)
+        notification.addObserver(self, selector: #selector(processRenewablePurchased(_:)), name: NSNotification.Name(IAPProduct.renewable.rawValue), object: nil)
+        notification.addObserver(self, selector: #selector(processNonRenewablePurchased(_:)), name: NSNotification.Name(IAPProduct.nonRenewable.rawValue), object: nil)
+    }
+    
     private func priceString(for product: SKProduct) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .currency
@@ -49,6 +58,20 @@ class PurchaseController: UIViewController {
         
         return numberFormatter.string(from: product.price) ?? "\(product.price)"
     }
+    
+    @objc private func processConsumablePurchased(_ notification: NSNotification) {
+        print("processConsumablePurchased")
+    }
+    @objc private func processNonConsumablePurchased(_ notification: NSNotification) {
+        print("processNonConsumablePurchased")
+    }
+    @objc private func processRenewablePurchased(_ notification: NSNotification) {
+        print("processRenewablePurchased")
+    }
+    @objc private func processNonRenewablePurchased(_ notification: NSNotification) {
+        print("processNonRenewablePurchased")
+    }
+
 }
 
 extension PurchaseController: UITableViewDataSource {

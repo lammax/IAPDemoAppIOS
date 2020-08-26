@@ -8,13 +8,23 @@
 
 import Foundation
 
-enum IAPProducts: String, CaseIterable {
+enum IAPProduct: String, CaseIterable {
     case consumable = "com.lammax.ios.products.demoproject.consumable"
     case nonConsumable = "com.lammax.ios.products.demoproject.nonconsumable"
     case nonRenewable = "com.lammax.ios.products.demoproject.nonrenewable"
     case renewable = "com.lammax.ios.products.demoproject.renewable"
 
     static var allProducts: Set<String> {
-        Set(IAPProducts.allCases.map { $0.rawValue })
+        Set(IAPProduct.allCases.map { $0.rawValue })
+    }
+    
+    static func getProduct(by identifier: String) -> IAPProduct? {
+        switch true {
+        case identifier == IAPProduct.consumable.rawValue: return IAPProduct.consumable
+        case identifier == IAPProduct.nonConsumable.rawValue: return IAPProduct.nonConsumable
+        case identifier == IAPProduct.renewable.rawValue: return IAPProduct.renewable
+        case identifier == IAPProduct.nonRenewable.rawValue: return IAPProduct.nonRenewable
+        default: return nil
+        }
     }
 }

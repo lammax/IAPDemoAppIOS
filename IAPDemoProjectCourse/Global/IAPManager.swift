@@ -12,7 +12,8 @@ import StoreKit
 class IAPManager: NSObject {
     
     static let productNotificationIdentifier = "IAPManagerProductIdentifier"
-    
+    static let productPurchasedNotificationIdentifier = "IAPManagerPurchasedProductIdentifier"
+
     static let sharedInstance = IAPManager()
     private override init() {}
     
@@ -29,7 +30,7 @@ class IAPManager: NSObject {
     }
     
     public func getProducts() {
-        let identifires: Set<String> = IAPProducts.allProducts
+        let identifires: Set<String> = IAPProduct.allProducts
         
         let productsRequest = SKProductsRequest(productIdentifiers: identifires)
         productsRequest.delegate = self
@@ -54,6 +55,10 @@ class IAPManager: NSObject {
         paymentQueue.add(payment)
     }
     
+    public func restoreCompletedTransactions() {
+        paymentQueue.restoreCompletedTransactions()
+    }
+    
 }
 
 extension IAPManager: SKPaymentTransactionObserver {
@@ -61,13 +66,32 @@ extension IAPManager: SKPaymentTransactionObserver {
         transactions.forEach {
             switch $0.transactionState {
             case .deferred: break
-            case .failed: print(" Purchase failed ")
-            case .purchased: print(" Purchased ")
             case .purchasing: break
-            case .restored: print(" Restored ")
+            case .failed: failed(transaction: $0)
+            case .restored: restored(transaction: $0)
+            case .purchased: completed(transaction: $0)
             }
         }
     }
+    
+    private func failed(transaction: SKPaymentTransaction) {
+        if let error = transaction.error as NSError? {
+            if error.code != SKError.paymentCancelled.rawValue {
+                print("Transaction error: \(transaction.error!.localizedDescription)")
+            }
+        }
+        paymentQueue.finishTransaction(transaction)
+    }
+    
+    private func completed(transaction: SKPaymentTransaction) {
+        NotificationCenter.default.post(name: NSNotification.Name(transaction.payment.productIdentifier), object: nil)
+        paymentQueue.finishTransaction(transaction)
+    }
+    
+    private func restored(transaction: SKPaymentTransaction) {
+        paymentQueue.finishTransaction(transaction)
+    }
+    
 }
 
 extension IAPManager: SKProductsRequestDelegate {
