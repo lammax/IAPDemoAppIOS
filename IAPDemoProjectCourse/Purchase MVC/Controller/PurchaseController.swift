@@ -47,7 +47,7 @@ class PurchaseController: UIViewController {
         notification.addObserver(self, selector: #selector(reload), name: NSNotification.Name(IAPManager.productNotificationIdentifier), object: nil)
         notification.addObserver(self, selector: #selector(processConsumablePurchased(_:)), name: NSNotification.Name(IAPProduct.consumable.rawValue), object: nil)
         notification.addObserver(self, selector: #selector(processNonConsumablePurchased(_:)), name: NSNotification.Name(IAPProduct.nonConsumable.rawValue), object: nil)
-        notification.addObserver(self, selector: #selector(processRenewablePurchased(_:)), name: NSNotification.Name(IAPProduct.renewable.rawValue), object: nil)
+        notification.addObserver(self, selector: #selector(processRenewablePurchased), name: NSNotification.Name(IAPProduct.renewable.rawValue), object: nil)
         notification.addObserver(self, selector: #selector(processNonRenewablePurchased(_:)), name: NSNotification.Name(IAPProduct.nonRenewable.rawValue), object: nil)
     }
     
@@ -65,8 +65,12 @@ class PurchaseController: UIViewController {
     @objc private func processNonConsumablePurchased(_ notification: NSNotification) {
         print("processNonConsumablePurchased")
     }
-    @objc private func processRenewablePurchased(_ notification: NSNotification) {
+    @objc private func processRenewablePurchased() -> String {
         print("processRenewablePurchased")
+        if UserDefaults.standard.bool(forKey: IAPProduct.renewable.rawValue) {
+            return "Subscription enabled"
+        }
+        return "Subscription disabled"
     }
     @objc private func processNonRenewablePurchased(_ notification: NSNotification) {
         print("processNonRenewablePurchased")
@@ -92,6 +96,11 @@ extension PurchaseController: UITableViewDataSource {
         cell.textLabel?.text = product.localizedTitle + " - " + self.priceString(for: product)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        processRenewablePurchased()
+    }
+
 }
 
 

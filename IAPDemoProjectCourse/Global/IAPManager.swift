@@ -86,7 +86,31 @@ extension IAPManager: SKPaymentTransactionObserver {
     }
     
     private func completed(transaction: SKPaymentTransaction) {
-        NotificationCenter.default.post(name: NSNotification.Name(transaction.payment.productIdentifier), object: nil)
+        let receiptValidator = ReceiptValidator()
+        let result = receiptValidator.validateReceipt()
+        
+        switch result {
+        case .success(let receipt):
+            guard let purchase = receipt.inAppPurchaseReceipts?.filter({ $0.productIdentifier == IAPProduct.renewable.rawValue }).first else {
+                NotificationCenter.default.post(name: NSNotification.Name(transaction.payment.productIdentifier), object: nil)
+                paymentQueue.finishTransaction(transaction)
+                return
+            }
+            
+            if purchase.subscriptionExpirationDate?.compare(Date()) == .orderedDescending {
+                UserDefaults.standard.set(true, forKey: IAPProduct.renewable.rawValue)
+                print("Subscription is OK")
+            } else {
+                UserDefaults.standard.set(false, forKey: IAPProduct.renewable.rawValue)
+                print("Subscription has been expired")
+            }
+
+            NotificationCenter.default.post(name: NSNotification.Name(transaction.payment.productIdentifier), object: nil)
+
+        case .error(let error):
+            print(error.localizedDescription)
+        }
+        
         paymentQueue.finishTransaction(transaction)
     }
     
